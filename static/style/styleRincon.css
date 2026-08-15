@@ -1,57 +1,273 @@
+/* =========================================================
+   PROYECTOS SENA - Diseño moderno y responsive
+   ========================================================= */
 
+:root {
+  --sena-green: #39a900;
+  --sena-dark: #123b22;
+  --sena-light: #f4f8f3;
+  --text: #1d2921;
+  --muted: #66736a;
+  --white: #ffffff;
+  --border: #e1e8e2;
+  --shadow: 0 18px 45px rgba(18, 59, 34, 0.10);
+}
+
+/* HERO */
 .hero {
   position: relative;
-  height: 60vh;
-  background: url('https://picsum.photos/1200/600?blur=2') center/cover no-repeat;
+  min-height: 62vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  padding: 4rem 1.5rem;
+  overflow: hidden;
+  color: var(--white);
+  isolation: isolate;
+  background:
+    linear-gradient(135deg, rgba(18, 59, 34, .92), rgba(57, 169, 0, .72)),
+    url('https://picsum.photos/1600/900?blur=2') center/cover no-repeat;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,.16), transparent 28%);
+  z-index: -1;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  right: -180px;
+  bottom: -220px;
+  border: 70px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+  z-index: -1;
 }
 
 .hero .overlay {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 3rem;
-  border-radius: 12px;
+  width: min(900px, 100%);
+  padding: clamp(2rem, 5vw, 4rem);
   text-align: center;
+  background: rgba(8, 30, 17, .34);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 28px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .hero h2 {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
+  max-width: 780px;
+  margin: 0 auto 1rem;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -.04em;
 }
 
-#colegios, #proyectos {
-  padding: 3rem 2rem;
+.hero p {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.7;
+  color: rgba(255,255,255,.9);
+}
+
+/* SECCIONES */
+#colegios,
+#proyectos {
+  position: relative;
+  padding: clamp(4rem, 8vw, 7rem) max(1.25rem, 5vw);
   text-align: center;
+  background: var(--white);
 }
 
-.colegio-list, .project-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
+#proyectos {
+  background: linear-gradient(180deg, var(--sena-light) 0%, #ffffff 100%);
 }
 
-.colegio-card, .project-card {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 1.5rem;
-  width: 280px;
-  transition: transform 0.3s, box-shadow 0.3s;
+#colegios h2,
+#proyectos h2 {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  color: var(--sena-dark);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+}
+
+#colegios h2::after,
+#proyectos h2::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 5px;
+  margin: 1rem auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--sena-green), #78d63b);
+}
+
+/* GRIDS */
+.colegio-list,
+.project-grid {
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.6rem;
+  margin: 3rem auto 0;
+}
+
+/* TARJETAS */
+.colegio-card,
+.project-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.7rem;
   text-align: left;
+  background: rgba(255,255,255,.96);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(18, 59, 34, .06);
+  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
 }
 
-.colegio-card:hover, .project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+.colegio-card::before,
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--sena-green), #72cf39);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s ease;
+}
+
+.colegio-card:hover,
+.project-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(57,169,0,.35);
+  box-shadow: var(--shadow);
+}
+
+.colegio-card:hover::before,
+.project-card:hover::before {
+  transform: scaleX(1);
+}
+
+.colegio-card h3,
+.project-card h3 {
+  margin: 0 0 .7rem;
+  color: var(--sena-dark);
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.colegio-card p,
+.project-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: .96rem;
+}
+
+/* IMÁGENES DE PROYECTOS */
+.project-card {
+  padding: 0;
 }
 
 .project-card img {
+  display: block;
   width: 100%;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  margin: 0;
+  transition: transform .5s ease, filter .5s ease;
 }
 
+.project-card:hover img {
+  transform: scale(1.045);
+  filter: saturate(1.08);
+}
+
+.project-card h3,
+.project-card p {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.project-card h3 {
+  margin-top: 1.35rem;
+}
+
+.project-card p {
+  margin-bottom: 1.6rem;
+}
+
+/* ACCESIBILIDAD */
+.project-card:focus-within,
+.colegio-card:focus-within {
+  outline: 3px solid rgba(57,169,0,.35);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .colegio-card,
+  .project-card img,
+  .project-card::before,
+  .colegio-card::before {
+    transition: none;
+  }
+}
+
+/* TABLET / MÓVIL */
+@media (max-width: 700px) {
+  .hero {
+    min-height: 55vh;
+    padding: 2rem 1rem;
+  }
+
+  .hero .overlay {
+    border-radius: 20px;
+    padding: 2rem 1.25rem;
+  }
+
+  .project-grid,
+  .colegio-list {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  #colegios,
+  #proyectos {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: .95rem;
+  }
+
+  .project-card h3,
+  .project-card p {
+    margin-left: 1.15rem;
+    margin-right: 1.15rem;
+  }
+}
