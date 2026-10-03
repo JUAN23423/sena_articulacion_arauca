@@ -20,19 +20,27 @@
 
     <div class="cards">
       {% for proyecto in proyectos %}
-      <a class="project-link" href="{{ url_for('main.proyecto', id=proyecto.id) }}">
+      <a class="project-link" href="{{ url_for('proyectos.detalle', id=proyecto.id) }}">
         <article class="card project-home-card">
           {% if proyecto.foto %}
             <img src="{{ url_for('static', filename='uploads/' ~ proyecto.foto) }}" alt="Imagen del proyecto {{ proyecto.nombre }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
           {% else %}
             <img src="{{ url_for('static', filename='img/fondo.png') }}" alt="Proyecto SENA">
           {% endif %}
+
           <div class="project-home-content">
             <span class="project-tag">Proyecto SENA</span>
             <h3>{{ proyecto.nombre }}</h3>
             <p>{{ proyecto.descripcion }}</p>
-            {% if proyecto.tecnico %}<small><strong>Técnico:</strong> {{ proyecto.tecnico }}</small>{% endif %}
-            {% if proyecto.colegio %}<small><strong>Colegio:</strong> {{ proyecto.colegio }}</small>{% endif %}
+
+            {% if proyecto.tecnico %}
+              <small><strong>Técnico:</strong> {{ proyecto.tecnico }}</small>
+            {% endif %}
+
+            {% if proyecto.colegio %}
+              <small><strong>Colegio:</strong> {{ proyecto.colegio }}</small>
+            {% endif %}
+
             <span class="project-more">Ver proyecto completo →</span>
           </div>
         </article>
@@ -41,7 +49,9 @@
     </div>
 
     <div class="projects-action">
-      <a class="btn project-main-button" href="{{ url_for('main.proyectos') }}">Ver todos los proyectos</a>
+      <a class="btn project-main-button" href="{{ url_for('proyectos.listado') }}">
+        Ver todos los proyectos
+      </a>
     </div>
   </div>
 </section>
