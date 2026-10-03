@@ -1,47 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
-<section class="hero">
-  <div class="overlay">
-    <h2>Innovación y talento que transforman el futuro</h2>
-    <p>Descubre los proyectos de los aprendices del SENA y colegios articulados.</p>
-  </div>
-</section>
-
-<section id="colegios">
-  <h2>Colegios Participantes</h2>
-  <div class="colegio-list">
-    {%for colegio in colegios %}
-    <div class="colegio-card">
-      <h3>{{colegio.nombre}}</h3>
-      <p>Programas de desarrollo de software y robótica educativa.</p>
-    </div>
-    {%endfor%}
-  </div>
-</section>
-
-<section id="proyectos" class="tecnicos-section">
-  <h2>Proyectos Destacados</h2>
-  <div class="project-grid">
-    <div class="project-card">
-      <img src="https://picsum.photos/400/250?random=1" alt="Proyecto 1">
-      <h3>Aplicación de Control Ambiental</h3>
-      <p>Una app creada por aprendices para medir la calidad del aire local.</p>
-    </div>
-    <div class="project-card">
-      <img src="https://picsum.photos/400/250?random=2" alt="Proyecto 2">
-      <h3>Robot Asistente Escolar</h3>
-      <p>Robot diseñado por estudiantes de articulación para tareas educativas.</p>
-    </div>
-    <div class="project-card">
-      <img src="https://picsum.photos/400/250?random=3" alt="Proyecto 3">
-      <h3>Sistema de Riego Inteligente</h3>
-      <p>Proyecto de automatización agrícola impulsado por sensores IoT.</p>
+<section class="projects-page">
+  <div class="projects-page-hero">
+    <div>
+      <span class="section-kicker">SENA ARAUCA</span>
+      <h1>Proyectos</h1>
+      <p>Consulta los proyectos activos registrados en la base de datos.</p>
     </div>
   </div>
+
+  <div class="projects-page-content">
+    {% if proyectos %}
+      <div class="projects-list-grid">
+        {% for proyecto in proyectos %}
+        <article class="database-project-card">
+          <a href="{{ url_for('main.proyecto', id=proyecto.id) }}" class="database-project-image-link">
+            {% if proyecto.foto_principal %}
+              <img src="{{ url_for('static', filename='uploads/' ~ proyecto.foto_principal) }}" alt="Imagen de {{ proyecto.nombre }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
+            {% else %}
+              <img src="{{ url_for('static', filename='img/fondo.png') }}" alt="Proyecto SENA">
+            {% endif %}
+          </a>
+
+          <div class="database-project-body">
+            <span class="project-tag">ID #{{ proyecto.id }}</span>
+            <h2>{{ proyecto.nombre }}</h2>
+            <p>{{ proyecto.descripcion_corta }}</p>
+
+            <div class="project-meta">
+              <span><strong>Técnico:</strong> {{ proyecto.tecnico }}</span>
+              <span><strong>Ficha:</strong> {{ proyecto.ficha }}</span>
+              <span><strong>Colegio:</strong> {{ proyecto.colegio }}</span>
+              <span><strong>Municipio:</strong> {{ proyecto.municipio }}</span>
+            </div>
+
+            <div class="project-dates">
+              {% if proyecto.fecha_inicio %}<span><strong>Inicio:</strong> {{ proyecto.fecha_inicio }}</span>{% endif %}
+              {% if proyecto.fecha_fin %}<span><strong>Fin:</strong> {{ proyecto.fecha_fin }}</span>{% endif %}
+            </div>
+
+            <a class="project-details-button" href="{{ url_for('main.proyecto', id=proyecto.id) }}">Ver toda la información</a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="no-projects-box">
+        <h2>No hay proyectos registrados</h2>
+        <p>La base de datos no tiene proyectos activos para mostrar.</p>
+      </div>
+    {% endif %}
+  </div>
 </section>
-
-
 {% endblock %}
