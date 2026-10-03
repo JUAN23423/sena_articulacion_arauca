@@ -5,7 +5,7 @@
   <div class="projects-page-hero">
     <div>
       <span class="section-kicker">SENA ARAUCA</span>
-      <h1>Proyectos</h1>
+      <h1>Todos los proyectos</h1>
       <p>Consulta los proyectos activos registrados en la base de datos.</p>
     </div>
   </div>
@@ -15,7 +15,7 @@
       <div class="projects-list-grid">
         {% for proyecto in proyectos %}
         <article class="database-project-card">
-          <a href="{{ url_for('main.proyecto', id=proyecto.id) }}" class="database-project-image-link">
+          <a href="{{ url_for('proyectos.detalle', id=proyecto.id) }}" class="database-project-image-link">
             {% if proyecto.foto_principal %}
               <img src="{{ url_for('static', filename='uploads/' ~ proyecto.foto_principal) }}" alt="Imagen de {{ proyecto.nombre }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
             {% else %}
@@ -36,11 +36,17 @@
             </div>
 
             <div class="project-dates">
-              {% if proyecto.fecha_inicio %}<span><strong>Inicio:</strong> {{ proyecto.fecha_inicio }}</span>{% endif %}
-              {% if proyecto.fecha_fin %}<span><strong>Fin:</strong> {{ proyecto.fecha_fin }}</span>{% endif %}
+              {% if proyecto.fecha_inicio %}
+                <span><strong>Inicio:</strong> {{ proyecto.fecha_inicio }}</span>
+              {% endif %}
+              {% if proyecto.fecha_fin %}
+                <span><strong>Fin:</strong> {{ proyecto.fecha_fin }}</span>
+              {% endif %}
             </div>
 
-            <a class="project-details-button" href="{{ url_for('main.proyecto', id=proyecto.id) }}">Ver toda la información</a>
+            <a class="project-details-button" href="{{ url_for('proyectos.detalle', id=proyecto.id) }}">
+              Ver toda la información
+            </a>
           </div>
         </article>
         {% endfor %}
