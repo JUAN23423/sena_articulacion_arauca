@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="project-detail-page">
+  <div class="project-detail-hero">
+    <a class="back-projects" href="{{ url_for('main.proyectos') }}">← Volver a proyectos</a>
+    <div class="project-detail-hero-grid">
+      <div>
+        <span class="project-tag">Proyecto #{{ proyecto.id_proyectos }}</span>
+        <h1>{{ proyecto.nombre }}</h1>
+        <p>{{ proyecto.descripcion_corta }}</p>
+      </div>
+      <div class="project-detail-main-image">
+        <img src="{{ url_for('static', filename='uploads/' ~ proyecto.foto_principal) }}" alt="{{ proyecto.nombre }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
+      </div>
+    </div>
+  </div>
+
+  <div class="project-detail-content">
+    <section class="project-info-section">
+      <div class="project-info-card project-info-wide">
+        <span class="section-kicker">Descripción completa</span>
+        <h2>Sobre el proyecto</h2>
+        <p>{{ proyecto.descripcion_larga }}</p>
+      </div>
+      <div class="project-info-card">
+        <span class="section-kicker">Objetivo</span>
+        <h2>¿Qué busca lograr?</h2>
+        <p>{{ proyecto.objetivo if proyecto.objetivo else 'No registrado.' }}</p>
+      </div>
+      <div class="project-info-card">
+        <span class="section-kicker">Resultado</span>
+        <h2>Resultado</h2>
+        <p>{{ proyecto.resultado if proyecto.resultado else 'No registrado.' }}</p>
+      </div>
+    </section>
+
+    <section class="project-data-section">
+      <div class="project-info-card">
+        <span class="section-kicker">Proyecto</span>
+        <h2>Datos registrados</h2>
+        <div class="project-data-grid">
+          <div><strong>ID</strong><span>{{ proyecto.id_proyectos }}</span></div>
+          <div><strong>Estado</strong><span>{{ 'Activo' if proyecto.activo else 'Inactivo' }}</span></div>
+          <div><strong>Fecha de registro</strong><span>{{ proyecto.fecha_registro }}</span></div>
+          <div><strong>Fecha de inicio</strong><span>{{ proyecto.fecha_inicio if proyecto.fecha_inicio else 'No registrada' }}</span></div>
+          <div><strong>Fecha de finalización</strong><span>{{ proyecto.fecha_fin if proyecto.fecha_fin else 'No registrada' }}</span></div>
+          <div><strong>Video de introducción</strong><span>{{ proyecto.video_intro if proyecto.video_intro else 'No registrado' }}</span></div>
+        </div>
+      </div>
+
+      <div class="project-info-card">
+        <span class="section-kicker">Formación</span>
+        <h2>Técnico y colegio</h2>
+        <div class="project-data-grid">
+          <div><strong>Técnico</strong><span>{{ proyecto.tecnico_nombre }}</span></div>
+          <div><strong>Ficha</strong><span>{{ proyecto.ficha }}</span></div>
+          <div><strong>Modalidad</strong><span>{{ proyecto.modalidad_nombre }}</span></div>
+          <div><strong>Colegio</strong><span>{{ proyecto.colegio_nombre }}</span></div>
+          <div><strong>Municipio</strong><span>{{ proyecto.municipio_nombre }}</span></div>
+          <div><strong>Slogan</strong><span>{{ proyecto.colegio_slogan if proyecto.colegio_slogan else 'No registrado' }}</span></div>
+        </div>
+      </div>
+
+      {% if proyecto.instructor_nombres %}
+      <div class="project-info-card project-info-wide">
+        <span class="section-kicker">Instructor</span>
+        <h2>{{ proyecto.instructor_nombres }} {{ proyecto.instructor_apellidos }}</h2>
+        <p>{{ proyecto.instructor_perfil if proyecto.instructor_perfil else 'Perfil profesional no registrado.' }}</p>
+      </div>
+      {% endif %}
+    </section>
+
+    {% if aprendices %}
+    <section class="project-related-section">
+      <div class="project-info-card">
+        <span class="section-kicker">Equipo</span>
+        <h2>Aprendices participantes</h2>
+        <div class="apprentices-grid">
+          {% for aprendiz in aprendices %}
+          <div class="apprentice-card">
+            <img src="{{ url_for('static', filename='uploads/' ~ aprendiz.foto) }}" alt="{{ aprendiz.nombres }} {{ aprendiz.apellidos }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
+            <div><strong>{{ aprendiz.nombres }} {{ aprendiz.apellidos }}</strong><span>Aprendiz SENA</span></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if galeria %}
+    <section class="project-related-section">
+      <div class="project-info-card">
+        <span class="section-kicker">Galería</span>
+        <h2>Imágenes del proyecto</h2>
+        <div class="project-gallery-grid">
+          {% for imagen in galeria %}
+          <figure>
+            <img src="{{ imagen.url_imagen if imagen.url_imagen.startswith('http') else url_for('static', filename='uploads/' ~ imagen.url_imagen) }}" alt="{{ imagen.descripcion if imagen.descripcion else 'Imagen del proyecto' }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
+            {% if imagen.descripcion %}<figcaption>{{ imagen.descripcion }}</figcaption>{% endif %}
+          </figure>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if videos or proyecto.video_intro %}
+    <section class="project-related-section">
+      <div class="project-info-card">
+        <span class="section-kicker">Videos</span>
+        <h2>Contenido audiovisual</h2>
+        {% if proyecto.video_intro %}
+        <p><strong>Video de introducción:</strong> <a class="video-link" href="{{ proyecto.video_intro }}" target="_blank" rel="noopener noreferrer">Abrir video →</a></p>
+        {% endif %}
+        {% if videos %}
+        <div class="video-list">
+          {% for video in videos %}
+          <div class="video-item">
+            <strong>{{ video.titulo if video.titulo else 'Video del proyecto' }}</strong>
+            <a href="{{ video.url_video }}" target="_blank" rel="noopener noreferrer">Ver video →</a>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
