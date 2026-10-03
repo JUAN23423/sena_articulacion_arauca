@@ -1,94 +1,114 @@
 {% extends "base.html" %}
 {% block content %}
+
 <header id="inicio" class="hero">
   <div class="hero-inner">
-    <h1 class="flash-text">ARTICULACION SENA ARAUCA</h1>
+    <h1 class="flash-text">ARTICULACIÓN SENA ARAUCA</h1>
     <p class="hero-sub">Conectando proyectos de colegios y municipios SENA Arauca</p>
-    <a class="btn" href="#emprendimientos">Explorar</a>
+    <a class="btn" href="#proyectos">Explorar proyectos</a>
   </div>
 </header>
 
-<!-- EMPRENDIMIENTOS (DISEÑO VERDE) -->
-{%if proyectos%}
+{% if proyectos %}
 <section id="proyectos" class="section emprendimientos">
   <div class="container">
-    <h2>Proyectos Productivos</h2>
-    {%for proyecto in proyectos%}
+    <div class="section-heading">
+      <span class="section-kicker">SENA ARAUCA</span>
+      <h2>Proyectos Productivos</h2>
+      <p>Conoce cada proyecto y entra a su ficha para consultar toda la información registrada en la base de datos.</p>
+    </div>
+
     <div class="cards">
-      <a href="{{url_for('main.proyecto', id = proyecto.id)}}">
-        <article class="card">
-          <img src="{{ url_for('static', filename='uploads/' + proyecto.foto) }}" alt="foto {{ proyecto.nombre }}">
-          <h3>{{proyecto.nombre}}</h3>
-          <p>{{proyecto.descripcion}}</p>
+      {% for proyecto in proyectos %}
+      <a class="project-link" href="{{ url_for('main.proyecto', id=proyecto.id) }}">
+        <article class="card project-home-card">
+          {% if proyecto.foto %}
+            <img src="{{ url_for('static', filename='uploads/' ~ proyecto.foto) }}" alt="Imagen del proyecto {{ proyecto.nombre }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/fondo.png') }}';">
+          {% else %}
+            <img src="{{ url_for('static', filename='img/fondo.png') }}" alt="Proyecto SENA">
+          {% endif %}
+          <div class="project-home-content">
+            <span class="project-tag">Proyecto SENA</span>
+            <h3>{{ proyecto.nombre }}</h3>
+            <p>{{ proyecto.descripcion }}</p>
+            {% if proyecto.tecnico %}<small><strong>Técnico:</strong> {{ proyecto.tecnico }}</small>{% endif %}
+            {% if proyecto.colegio %}<small><strong>Colegio:</strong> {{ proyecto.colegio }}</small>{% endif %}
+            <span class="project-more">Ver proyecto completo →</span>
+          </div>
         </article>
       </a>
-      {%endfor%}
+      {% endfor %}
+    </div>
+
+    <div class="projects-action">
+      <a class="btn project-main-button" href="{{ url_for('main.proyectos') }}">Ver todos los proyectos</a>
     </div>
   </div>
 </section>
-{%endif%}
+{% else %}
+<section id="proyectos" class="section empty-projects">
+  <div class="container">
+    <h2>No hay proyectos disponibles</h2>
+    <p>En este momento no existen proyectos activos registrados en la base de datos.</p>
+  </div>
+</section>
+{% endif %}
 
-{%if colegios%}
-<!-- COLEGIOS (DISEÑO NARANJA) -->
+{% if colegios %}
 <section id="colegios" class="section colegios">
   <div class="container">
     <h2>Colegios</h2>
     <div class="cards">
-      {%for colegio in colegios%}
-      <a href="{{url_for('main.colegio', id = colegio.id)}}">
+      {% for colegio in colegios %}
+      <a href="{{ url_for('main.colegio', id=colegio.id) }}">
         <article class="card">
-          <img src="{{url_for('static', filename='uploads/'+ colegio.logo)}}" alt="{{colegio.nombre}}">
-          <h3>{{colegio.nombre}}</h3>
-          <p>{{ colegio.slogan if colegio.slogan }}</p>
+          <img src="{{ url_for('static', filename='uploads/' ~ colegio.logo) }}" alt="{{ colegio.nombre }}">
+          <h3>{{ colegio.nombre }}</h3>
+          <p>{{ colegio.slogan if colegio.slogan else 'Institución articulada con el SENA.' }}</p>
         </article>
       </a>
-      {%endfor%}
+      {% endfor %}
     </div>
   </div>
-  <a href="{{url_for('main.colegios')}}">Ver todos los colegios</a>
+  <a href="{{ url_for('main.colegios') }}">Ver todos los colegios</a>
 </section>
+{% endif %}
 
-{%endif%}
-<!-- MUNICIPIOS (DISEÑO GRIS/AZUL) -->
-{%if municipios%}
+{% if municipios %}
 <section id="municipios" class="section municipios">
   <div class="container">
     <h2>Municipios</h2>
     <div class="cards">
-      {%for municipio in municipios %}
-      <a href="{{url_for('main.municipio', id = municipio.id)}}">
+      {% for municipio in municipios %}
+      <a href="{{ url_for('main.municipio', id=municipio.id) }}">
         <article class="card">
-
-          <img src="{{url_for('static', filename='uploads/' + municipio.foto)}}" alt="foto {{municipio.nombre}}">
-          <h3>{{municipio.nombre}}</h3>
+          <img src="{{ url_for('static', filename='uploads/' ~ municipio.foto) }}" alt="Foto {{ municipio.nombre }}">
+          <h3>{{ municipio.nombre }}</h3>
           <p>Emprendimiento juvenil y cultural.</p>
         </article>
       </a>
-      {%endfor%}
+      {% endfor %}
     </div>
   </div>
 </section>
-{%endif%}
+{% endif %}
 
-
-<!-- INSTRUCTORES (DISEÑO OSCURO) -->
-{%if instructores%}
+{% if instructores %}
 <section id="instructores" class="section instructores">
   <div class="container">
     <h2>Instructores</h2>
     <div class="cards">
-      {%for instructor in instructores%}
-      <a href="{{url_for('main.instructor', id= instructor.id)}}">
+      {% for instructor in instructores %}
+      <a href="{{ url_for('main.instructor', id=instructor.id) }}">
         <article class="card">
-          <img src="{{url_for('static', filename='uploads/'+ instructor.foto)}}" alt="Instructor 1">
-          <h3>{{instructor.nombres + " "+ instructor.apellidos}}</h3>
-          <p>profesional en: {{instructor.id_cargo}}</p>
+          <img src="{{ url_for('static', filename='uploads/' ~ instructor.foto) }}" alt="Instructor">
+          <h3>{{ instructor.nombres ~ ' ' ~ instructor.apellidos }}</h3>
+          <p>Instructor SENA</p>
         </article>
       </a>
-      {%endfor%}
     </div>
   </div>
 </section>
+{% endif %}
 
-{%endif%}
 {% endblock %}
