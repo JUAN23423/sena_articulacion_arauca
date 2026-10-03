@@ -1,5 +1,5 @@
 from flask import Flask
-from mis_blueprints.routes import main_bp, admin_bp
+from mis_blueprints.routes import main_bp, admin_bp, proyectos_bp
 from dotenv import load_dotenv
 import os
 
@@ -12,14 +12,15 @@ def create_app():
     # Configuración básica
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-
     app.secret_key = os.getenv('API_KEY')
 
     # Registrar blueprints
     app.register_blueprint(main_bp)
+    app.register_blueprint(proyectos_bp)
     app.register_blueprint(admin_bp)
 
     return app
+
 
 if __name__ == '__main__':
     app = create_app()
